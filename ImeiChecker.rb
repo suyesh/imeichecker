@@ -3,9 +3,9 @@ puts "What is the IMEI?"
 imei = gets.chomp
 imei_split = []
 
-array = imei.split(//)
+imei2 = imei.split(//)
 
-array.each do |i|
+imei2.each do |i|
 	imei_split << i.to_i
 end
 
