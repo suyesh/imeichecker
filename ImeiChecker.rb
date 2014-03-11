@@ -1,52 +1,19 @@
-class Imei 
-	attr_accessor :Imei, :split_total1, :split_total2, :split_total
+puts "What is the IMEI?"
 
-	
+imei = gets.chomp
+imei_split = []
 
-	def initialize(imei)
-		@imei = imei.to_s
-		@split_total = []
-		@split_total1 = []
-		@split_total2 = []
-	end
+array = imei.split(//)
 
-	def check_two_digit(num)
-		if num.to_s.size == 2
-			num = num.to_s.split(//).partition.with_index{|_,i| i.odd?}
-			num.each do |a, b|
-				a.to_i + b.to_i
-			end
-		else
-			num.to_i
-		end
-	end
-
-	def check_imei
-		if @imei.length == 15
-			split1, split2 = @imei.split(//).partition.with_index{|_, i| i.odd?}
-			split1.each do |a|
-				@split_total1 << a.to_i * 2
-			end
-			split2.pop
-			split2.each do |a|
-				@split_total2 << a.to_i
-			end
-
-			@split_total1.each do |a|
-				@split_total << check_two_digit(a)  
-			end
-
-		else
-			puts "IMEI NUMBER INVALID"
-		end
-	end
+array.each do |i|
+	imei_split << i.to_i
 end
 
-imei = Imei.new(358239053290088)
-
-imei.check_imei
-
-puts imei.split_total1.inspect
-puts imei.split_total2.inspect
-puts imei.split_total.inspect
-
+if imei.size == 15 && imei_split.each_slice(2).map {|x, y|
+  						y ||= 0
+  						[x, (y * 2).divmod(10)]
+						}.flatten.inject(:+) % 10 == 0 
+	puts "IMEI VALID"
+else
+	puts "IMEI INVALID"
+end
